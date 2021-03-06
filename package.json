@@ -1,0 +1,16 @@
+{
+  "name": "hasura-elm-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gql-types": "elm-graphql https://hasura.io/learn/graphql --base Hasura"
+  },
+  "author": "Farooq A. Khan",
+  "license": "ISC",
+  "devDependencies": {
+    "@dillonkearns/elm-graphql": "^4.2.0",
+    "elm": "^0.19.1-5",
+    "elm-live": "^4.0.2"
+  }
+}
