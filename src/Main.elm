@@ -150,3 +150,46 @@ type Msg
     | ClearAuthToken
     | FetchPrivateDataSuccess TodoData
     | GotStoredToken String 
+update : Msg -> Model -> (Model, Cmd.none)
+update msg model = 
+    case msg of 
+        EnterEmail em -> 
+            updateAuthData (\authData -> { authData | email = em}) model Cmd.none
+        EnterPassword  pswd-> 
+            updateAuthData (\authData -> { authData | password = pswd}) model Cmd.none
+        EnterUsername name -> 
+            updateAuthData (\authData -> { authData | username = name}) model Cmd.none
+        MakeLoginRequest -> 
+            (model, Cmd.none)
+        MakeSignupRequest -> 
+            (model, Cmd.none)
+        ToggleAuthForm _ -> 
+            (model, Cmd.none)
+        GotStoredToken token -> 
+            updateAuthData 
+                (\authData -> {authData | authToken = token })
+                model 
+                (if token == "" then Cmd.none else getInitialEvent token)
+        GotLoginResponse data -> 
+            case data of 
+                RemoteData.Success d -> 
+                    updateAuthAndFormData 
+                        (\authForm -> {authForm | isRequestInProgress = False, isSignupSuccess = False})
+                        (\authData -> {authData | authTOken = d.token})
+                        model 
+                        (Cmd.batch [storeToken d.token, getInitialEvent d.token])
+                Remote.Failure err -> 
+                    updateAuthFormData 
+                        (\authForm -> {authForm | isRequestInProgress = False, requestError = "Unable to authenticate"})
+                        model 
+                        Cmd.none
+                _ -> 
+                    (model, Cmd.none)
+
+        GotSignupResponse _ -> 
+            (model, Cmd.none)
+        ClearAuthToken -> 
+            (model, Cmd.none)
+        FetchPrivateDataSuccess response -> 
+            updatePrivateData (\privateDate -> {privateData | todos = response }) model Cmd.none
+
