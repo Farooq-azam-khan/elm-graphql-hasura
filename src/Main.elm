@@ -339,6 +339,10 @@ updateAuthData transform model cmd = ({model | authData = tranform model.authDat
 updatePrivateData : (PrivateTodo -> PrivateTodo) -> Model -> Cmd Msg -> (Model, Cmd Msg)
 updatePrivateData transform model cmd = ({model | privateData = transform model.privateData}, cmd) 
 
+
+-- VIEW 
+view : Model -> Html Msg 
+view model = div [] [] 
 renderTodos : PrivateTodo -> Html Msg 
 renderTodos privateData = 
     div [] <| 
@@ -351,3 +355,38 @@ renderTodos privateData =
                 [ span [] [ text "Loading todo..."]]
             RemoteData.Failure err -> 
                 [text "Error Loading Todos"]
+
+todoListWrapper : String -> Todos -> Html Msg 
+todoListWrapper visibility todos = 
+    div []  [ Keyed.ul [] <| 
+                List.map 
+                    viewKeyedListItem 
+                    (List.filter (filterTodos visibility) todos)
+    ]
+viewKeyedListItem  : Todo -> (String, Html Msg) 
+viewKeyedListItem todo = 
+    (String.fromInt todo.id, viewListItem todo)
+
+viewListItem : Todo -> Html Msg 
+viewListItem todo = 
+    li 
+    [] 
+    [ input 
+            [ checked todo.is_completed
+            , type_ "checkbox"
+            , id (String.fromInt todo.id)
+            , onClick (MarkCompleted todo.id todo.is_completed)
+            ]
+            []
+    , label [for (String.fromInt todo.id)] []
+   ]
+        
+filterTodos : String -> Todo -> Bool 
+filterTodos visibility todo = 
+    case visibility of 
+        "Completed" -> 
+            todo.is_completed
+        "Active" -> 
+            not todo.is_completed
+        _ -> 
+            True 
