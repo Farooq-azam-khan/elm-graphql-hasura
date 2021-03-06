@@ -89,3 +89,11 @@ type DisplayForm
     | Signup
 
 
+type alias Model =
+    { privateData : PrivateTodo
+    , publicTodoInsert : String
+    , publicTodoInfo : PublicTodoData
+    , online_users : OnlineUsers
+    , authData : AuthData
+    , authForm : AuthForm
+    }
