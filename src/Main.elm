@@ -45,6 +45,15 @@ import Html.Keyed as Keyed
 import Html.Events exposing (keyCode, on, onClick, onInput, onSubmit)
 import Html.Attributes exposing (..)
 
+-- MAIN 
+main : Program () Model Msg 
+main = Browser.element 
+    { view = view
+    , init = \_ -> init 
+    , update = update
+    , subscriptions = subscriptions 
+    }
+
 
 -- INIT
 
