@@ -7,6 +7,9 @@ import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
 import Graphql.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
+import Hasura.Object 
+import Hasura.Object.Todos as Todos 
+import Hasura.Object.Users as Users
 import Hasura.Enum.Order_by exposing (Order_by(..))
 import Hasura.InputObject
     exposing
