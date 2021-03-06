@@ -15,7 +15,6 @@ getAuthHeader :
     -> (Graphql.Http.Request decodesTo -> Graphql.Http.Request decodesTo)
 getAuthHeader token =
     Graphql.Http.withHeader "Authorization" ("Bearer " ++ token)
-    Graphql.Http.withHeader "Authorization" ("Bearer " ++ token)
 
 makeGraphQLQuery :
     String

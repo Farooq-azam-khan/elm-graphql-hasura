@@ -21,7 +21,7 @@ import Hasura.InputObject
         , buildInt_comparison_exp
         , buildTodos_set_input
         )
-
+import RemoteData exposing (..)
 import Hasura.Query 
     exposing 
         (OnlineUsersOptionalArguments, TodosOptionalArguments)
@@ -103,10 +103,11 @@ fetchPrivateTodos authToken =
         (RemoteData.fromResult >> fetchPrivateDataSuccess)
 
 
+type alias User = {}
 type alias OnlineUser =
     { id : String, user : User }
 
-
+type alias Todos = {}
 type alias TodoData =
     RemoteData (Graphql.Http.Error Todos) Todos
 
@@ -138,9 +139,6 @@ type alias AuthData =
     , email : String
     , password : String
     }
-type alias PrivateTodo = 
-    { todos : List Int
-    }
 
 type alias Model =
     { privateData : PrivateTodo
@@ -164,7 +162,7 @@ type Msg
     | FetchPrivateDataSuccess TodoData
     | GotStoredToken String 
 
-update : Msg -> Model -> (Model, Cmd.none)
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
         EnterEmail em -> 
