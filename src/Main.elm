@@ -182,7 +182,6 @@ type alias LoginResponseParser =
 
 
 
--- Application Logic
 
 orderByCreatedAt : Order_by -> OptionalArgument (List Todos_order_by)
 orderByCreatedAt order =
@@ -209,14 +208,14 @@ selectUser =
     SelectionSet.map User Users.name
 
 
-todoListSelection : SelectionSet Todo Hasura.Object.Todo
+todoListSelection : SelectionSet Todo Hasura.Object.Todos
 todoListSelection =
     SelectionSet.map5 Todo
         Todos.id
         Todos.user_id
         Todos.is_completed
         Todos.title
-        (Todos.user selctUser)
+        (Todos.user selectUser)
 
 
 fetchPrivateTodosQuery : SelectionSet Todos RootQuery
@@ -231,27 +230,6 @@ fetchPrivateTodos authToken =
         (RemoteData.fromResult >> fetchPrivateDataSuccess)
 
 
-type alias User = {}
-type alias OnlineUser =
-    { id : String, user : User }
-
-type alias Todos = {}
-type alias TodoData =
-    RemoteData (Graphql.Http.Error Todos) Todos
-
-
-type alias PrivateTodo =
-    { todos : TodoData
-    , visibility : String
-    , newTodo : String
-    }
-
-
-type DisplayForm
-    = Login
-    | Signup
-
-
 
 
 
@@ -262,21 +240,6 @@ initializePrivateTodo =
     , newTodo = ""
     , mutateTodo = GraphQLResponse RemoteData.NotAsked
     }
-type alias AuthData =
-    { username : String
-    , email : String
-    , password : String
-    }
-
-type alias Model =
-    { privateData : PrivateTodo
-    , publicTodoInsert : String
-    , publicTodoInfo : PublicTodoData
-    , online_users : OnlineUsers
-    , authData : AuthData
-    , authForm : AuthForm
-    }
-
 type Msg
     = EnterEmail String
     | EnterPassword String
@@ -289,10 +252,17 @@ type Msg
     | ClearAuthToken
     | FetchPrivateDataSuccess TodoData
     | GotStoredToken String 
+    | Tick Time.Posix
+    | MarkCompleted Int Bool 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
     case msg of 
+        MarkCompleted id completed -> 
+            let 
+                updateObj = updateTodoStatus id (not completed)
+            in
+                (model, updateTodoList updateObj model.authData.authToken)
         EnterEmail em -> 
             updateAuthData (\authData -> { authData | email = em}) model Cmd.none
         EnterPassword  pswd-> 
@@ -333,8 +303,12 @@ update msg model =
         FetchPrivateDataSuccess response -> 
             updatePrivateData (\privateDate -> {privateData | todos = response }) model Cmd.none
 
+updateTodoStatus : Int -> Bool -> SelectionSet (Maybe MutationResponse) RootMutation
+updateTodoStatus todoId status = 
+    Mutation.update_todos (setTodoListUpdateArgs status) (setTodoListUpdateWhere todoId) mutationResponseSelection
+
 updateAuthData : (AuthData -> AuthData) -> Model -> Cmd Msg -> (Model, Cmd Msg)
-updateAuthData transform model cmd = ({model | authData = tranform model.authData}, cmd)
+updateAuthData transform model cmd = ({model | authData = transform model.authData}, cmd)
 
 updatePrivateData : (PrivateTodo -> PrivateTodo) -> Model -> Cmd Msg -> (Model, Cmd Msg)
 updatePrivateData transform model cmd = ({model | privateData = transform model.privateData}, cmd) 
