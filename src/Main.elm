@@ -150,6 +150,7 @@ type Msg
     | ClearAuthToken
     | FetchPrivateDataSuccess TodoData
     | GotStoredToken String 
+
 update : Msg -> Model -> (Model, Cmd.none)
 update msg model = 
     case msg of 
