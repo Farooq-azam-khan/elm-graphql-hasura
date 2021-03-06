@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gql-types": "elm-graphql https://hasura.io/learn/graphql --base Hasura"
+    "gql-types": "elm-graphql https://hasura.io/learn/graphql --base Hasura",
+    "build:elm": "elm make src/Main.elm --output=elm.js", 
+    "build:elm:optimize": "elm make src/Main.elm --output=elm.js --optimize"
   },
   "author": "Farooq A. Khan",
   "license": "ISC",
