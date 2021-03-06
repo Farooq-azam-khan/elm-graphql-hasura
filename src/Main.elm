@@ -93,6 +93,93 @@ initalize =
     } 
 
 
+-- Types 
+type alias Todo  = 
+    { id:Int
+    , user_id: String
+    , is_completed: Bool
+    , title: String
+    , user: User
+    }
+type alias Todos = List Todo
+-- Application Logic
+
+type alias User = { name : String } 
+
+
+type alias OnlineUser =
+    { id : String, user : User }
+type alias OnlineUsers = List OnlineUser 
+
+type alias OnlineUsersData = RemoteData Decode.Error OnlineUsers
+
+type alias PublicDataFetched = RemoteData (Graphql.Http.Error Todos) Todos 
+type alias TodoData =
+    RemoteData (Graphql.Http.Error Todos) Todos
+
+
+type alias PrivateTodo =
+    { todos : TodoData
+    , visibility : String
+    , newTodo : String
+    }
+
+
+type DisplayForm
+    = Login
+    | Signup
+
+type alias AuthData =
+    { username : String
+    , email : String
+    , password : String
+    }
+
+type alias PublicTodoData = 
+    { todos : Todos 
+    , oldestTodoId : Int
+    , newTodoCound : Int 
+    , currentLastTodoId : Int 
+    , oldTodosAvailible : Int 
+    }
+type alias AuthForm = 
+    { displayForm : DisplayForm
+    , isRequestInProgress : Bool 
+    , isSignupSuccess : Bool 
+    , requestError : String
+    }
+type alias Model =
+    { privateData : PrivateTodo
+    , publicTodoInsert : String
+    , publicTodoInfo : PublicTodoData
+    , online_users : List OnlineUser 
+    , authData : AuthData
+    , authForm : AuthForm
+    , publicTodoInsertStatus : Operation 
+    , publicTodoLoadingStatus : Bool 
+    }
+
+type Operation 
+    = NotYetInitiated 
+    | OnGoing 
+    | OperationFailed String 
+    
+type alias SignupResponseParser =
+    RemoteData Http.Error SignupResponseData
+
+
+type alias SignupResponseData =
+    { id : String }
+
+
+type alias LoginResponseData =
+    { token : String }
+
+
+
+type alias LoginResponseParser =
+    RemoteData Http.Error LoginResponseData
+
 
 
 -- Application Logic
