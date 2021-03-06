@@ -1,7 +1,7 @@
 module Main exposing (main)
 
-import Array
 import Browser
+import Html exposing (..)
 import GraphQLClient exposing (makeGraphQLQuery)
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
@@ -36,6 +36,14 @@ import Hasura.Mutation
         , UpdateTodosOptionalArguments
         , UpdateTodosRequiredArguments
         )
+import Hasura.Object.Todos exposing (is_completed)
+import Constants exposing (failMsg, signup_url, login_url)
+import Http 
+import Json.Decode as Decode exposing (Decoder, field, int, string)
+import Time 
+import Html.Keyed as Keyed
+import Html.Events exposing (keyCode, on, onClick, onInput, onSubmit)
+import Html.Attributes exposing (..)
 
 
 -- INIT
