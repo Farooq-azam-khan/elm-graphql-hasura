@@ -54,6 +54,18 @@ main = Browser.element
     , subscriptions = subscriptions 
     }
 
+-- SUBSCRIPTIONS 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch <| 
+    [ GotStoredToken GotStoredToken] 
+    ++ (case String.length model.authData.authToken of 
+            0 -> []
+            _ -> [ gotRecentPublicTodoItem RecentPublicTodoReceived
+                 , gotOnlineUsers GotOnlineUsers
+                 , Time.every 30000 Tick
+                 ]
+        )
 
 -- INIT
 
