@@ -149,3 +149,4 @@ type Msg
     | GotSignupResponse SignupResponseParser
     | ClearAuthToken
     | FetchPrivateDataSuccess TodoData
+    | GotStoredToken String 
