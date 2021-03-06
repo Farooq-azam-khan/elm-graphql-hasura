@@ -82,7 +82,16 @@ init =
 
 initalize : Model
 initalize =
-    { todos = [], is_auth = True }
+    { privateDate  = initializePrivateTodo
+    , online_users = RemoteData.NotAsked
+    , publicTodoInsert  = ""
+    , publicTodoInfo = PublicTodoData [] 0 0 0 True 
+    , authData = AuthData "" "" "" "" 
+    , authForm = AuthForm Login False False False ""
+    , publicTodoInsertStatus = NotYetInitiated 
+    , publicTodoLoadingStatus = False 
+    } 
+
 
 
 
