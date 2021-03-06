@@ -115,6 +115,14 @@ initializePrivateTodo =
     , newTodo = ""
     , mutateTodo = GraphQLResponse RemoteData.NotAsked
     }
+type alias AuthData =
+    { username : String
+    , email : String
+    , password : String
+    }
+type alias PrivateTodo = 
+    { todos : List Int
+    }
 
 type alias Model =
     { privateData : PrivateTodo
