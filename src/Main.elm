@@ -97,3 +97,14 @@ type alias Model =
     , authData : AuthData
     , authForm : AuthForm
     }
+type Msg
+    = EnterEmail String
+    | EnterPassword String
+    | EnterUsername String
+    | MakeLoginRequest
+    | MakeSignupRequest
+    | ToggleAuthForm DisplayForm
+    | GotLoginResponse LoginResponseParser
+    | GotSignupResponse SignupResponseParser
+    | ClearAuthToken
+    | FetchPrivateDataSuccess TodoData
