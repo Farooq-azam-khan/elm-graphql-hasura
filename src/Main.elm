@@ -105,14 +105,7 @@ type DisplayForm
     | Signup
 
 
-type alias Model =
-    { privateData : PrivateTodo
-    , publicTodoInsert : String
-    , publicTodoInfo : PublicTodoData
-    , online_users : OnlineUsers
-    , authData : AuthData
-    , authForm : AuthForm
-    }
+
 
 
 initializePrivateTodo : PrivateTodo
@@ -123,6 +116,14 @@ initializePrivateTodo =
     , mutateTodo = GraphQLResponse RemoteData.NotAsked
     }
 
+type alias Model =
+    { privateData : PrivateTodo
+    , publicTodoInsert : String
+    , publicTodoInfo : PublicTodoData
+    , online_users : OnlineUsers
+    , authData : AuthData
+    , authForm : AuthForm
+    }
 
 type Msg
     = EnterEmail String
