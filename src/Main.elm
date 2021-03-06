@@ -23,6 +23,11 @@ import Hasura.Query exposing (OnlineUsersOptionalArguments, TodosOptionalArgumen
 
 -- INIT
 
+getInitialEvent : String -> Cmd Msg 
+getInitialEvent authToken = 
+    Cmd.batch
+        [ fetchPrivateTodos authToken
+        ]
 
 init : ( Model, Cmd Msg )
 init =
