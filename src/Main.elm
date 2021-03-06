@@ -1,8 +1,7 @@
 module Main exposing (..)
 
 import Array
-import Brower
-import Graph.OptionalArgument as OptionalArgument exposing (OptionalArgument(..))
+import Browser
 import GraphQLClient exposing (makeGraphQLQuery)
 import Graphql.Http
 import Graphql.Operation exposing (RootQuery)
@@ -19,6 +18,23 @@ import Hasura.InputObject
         , buildTodos_order_by
         )
 import Hasura.Query exposing (OnlineUsersOptionalArguments, TodosOptionalArguments)
+
+
+
+-- INIT
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( initalize, Cmd.none )
+
+
+initalize : Model
+initalize =
+    { todos = [], is_auth = True }
+
+
+
 -- Application Logic
 
 
@@ -97,6 +113,17 @@ type alias Model =
     , authData : AuthData
     , authForm : AuthForm
     }
+
+
+initializePrivateTodo : PrivateTodo
+initializePrivateTodo =
+    { todos = RemoteData.Loading
+    , visibility = "All"
+    , newTodo = ""
+    , mutateTodo = GraphQLResponse RemoteData.NotAsked
+    }
+
+
 type Msg
     = EnterEmail String
     | EnterPassword String
