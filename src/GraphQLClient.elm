@@ -1,7 +1,7 @@
-module GraphQLClient exposing (makeGraphQLQuery)
+module GraphQLClient exposing (makeGraphQLQuery, makeGraphQLMutation)
 
 import Graphql.Http
-import Graphql.Operation exposing (RootQuery)
+import Graphql.Operation exposing (RootQuery, RootMutation)
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 
 
@@ -15,7 +15,7 @@ getAuthHeader :
     -> (Graphql.Http.Request decodesTo -> Graphql.Http.Request decodesTo)
 getAuthHeader token =
     Graphql.Http.withHeader "Authorization" ("Bearer " ++ token)
-
+    Graphql.Http.withHeader "Authorization" ("Bearer " ++ token)
 
 makeGraphQLQuery :
     String
@@ -27,3 +27,15 @@ makeGraphQLQuery authToken query decodesTo =
         |> Graphql.Http.queryRequest graphql_url
         |> getAuthHeader authToken
         |> Graphql.Http.send decodesTo
+
+makeGraphQLMutation : 
+    String
+    -> SelectionSet decodesTo RootMutation 
+    -> (Result (Graphql.Http.Error decodesTo) decodesTo -> msg)
+    -> Cmd msg
+
+makeGraphQLMutation authToken query decodesTo = 
+    query 
+        |> Graphql.Http.mutationRequest graphql_url
+        |> getAuthHeader authToken 
+        |> Graphql.Http.send decodesTo 
