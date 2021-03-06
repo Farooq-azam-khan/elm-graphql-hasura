@@ -193,3 +193,15 @@ update msg model =
         FetchPrivateDataSuccess response -> 
             updatePrivateData (\privateDate -> {privateData | todos = response }) model Cmd.none
 
+renderTodos : PrivateTodo -> Html Msg 
+renderTodos privateData = 
+    div [] <| 
+        case privateData.todos of 
+            RemoteData.NotAsked -> 
+                [text "not asked"]
+            RemoteData.Success todos -> 
+                [ todoListWrapper privateData.visibility todos ]
+            RemoteData.Loading -> 
+                [ span [] [ text "Loading todo..."]]
+            RemoteData.Failure err -> 
+                [text "Error Loading Todos"]
