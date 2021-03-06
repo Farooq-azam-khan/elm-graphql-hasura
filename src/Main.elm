@@ -21,7 +21,7 @@ import Hasura.InputObject
         , buildInt_comparison_exp
         , buildTodos_set_input
         )
-import RemoteData exposing (..)
+import RemoteData exposing (RemoteData)
 import Hasura.Query 
     exposing 
         (OnlineUsersOptionalArguments, TodosOptionalArguments)
