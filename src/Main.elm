@@ -193,6 +193,12 @@ update msg model =
         FetchPrivateDataSuccess response -> 
             updatePrivateData (\privateDate -> {privateData | todos = response }) model Cmd.none
 
+updateAuthData : (AuthData -> AuthData) -> Model -> Cmd Msg -> (Model, Cmd Msg)
+updateAuthData transform model cmd = ({model | authData = tranform model.authData}, cmd)
+
+updatePrivateData : (PrivateTodo -> PrivateTodo) -> Model -> Cmd Msg -> (Model, Cmd Msg)
+updatePrivateData transform model cmd = ({model | privateData = transform model.privateData}, cmd) 
+
 renderTodos : PrivateTodo -> Html Msg 
 renderTodos privateData = 
     div [] <| 
