@@ -16,9 +16,23 @@ import Hasura.InputObject
         , buildBoolean_comparison_exp
         , buildTodos_bool_exp
         , buildTodos_order_by
+        , Int_comparison_exp
+        , Todos_set_input
+        , buildInt_comparison_exp
+        , buildTodos_set_input
         )
-import Hasura.Query exposing (OnlineUsersOptionalArguments, TodosOptionalArguments)
 
+import Hasura.Query 
+    exposing 
+        (OnlineUsersOptionalArguments, TodosOptionalArguments)
+
+import Hasura.Mutation
+    exposing 
+        ( InsertTodosRequiredArguments
+        , insert_todos
+        , UpdateTodosOptionalArguments
+        , UpdateTodosRequiredArguments
+        )
 
 
 -- INIT
@@ -41,7 +55,6 @@ initalize =
 
 
 -- Application Logic
-
 
 orderByCreatedAt : Order_by -> OptionalArgument (List Todos_order_by)
 orderByCreatedAt order =
